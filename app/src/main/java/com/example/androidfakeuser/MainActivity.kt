@@ -32,52 +32,42 @@ class MainActivity : AppCompatActivity() {
     private val adapter by lazy { AdapterData(this) }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu,menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id ==R.id.refresh){
+        if (id == R.id.refresh) {
 
         }
-
         return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         binding.rvProduct.adapter = adapter
-
         val progressDialog = ProgressDialog(this@MainActivity)
         val loading = 1000L
         progressDialog.setTitle("Now Loading")
         progressDialog.show()
         Handler(Looper.getMainLooper()).postDelayed({
-            // Dismiss progress bar after 4 seconds
+            // Dismiss progress bar after 1 seconds
             progressDialog.dismiss()
-        }, 2000)
-
-
-        Utildata.service.getAllProduct().enqueue(object : Callback<ResponseData>{
+        }, loading)
+        Utildata.service.getAllProduct().enqueue(object : Callback<ResponseData> {
             override fun onResponse(
-                call: Call<ResponseData>,
-                response: Response<ResponseData>
-
-            ){
-
-                if (response.isSuccessful){
-
-
-
+                    call: Call<ResponseData>,
+                    response: Response<ResponseData>
+            ) {
+                if (response.isSuccessful) {
                     response.body()?.let { adapter.setData(it.data) }
                     Toast.makeText(this@MainActivity, "berhasil", Toast.LENGTH_SHORT)
-                        .show()
+                            .show()
                 } else {
                     Toast.makeText(this@MainActivity, "gagal rekl", Toast.LENGTH_SHORT)
-                        .show()
+                            .show()
                 }
             }
 

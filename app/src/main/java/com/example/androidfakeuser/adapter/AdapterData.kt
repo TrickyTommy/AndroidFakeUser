@@ -27,7 +27,7 @@ class AdapterData (private val context: Context) : RecyclerView.Adapter<AdapterD
             binding.tvLastname.text = letak.last_Name
             binding.tvEmail.text = letak.email
             binding.tvId.text = letak.id.toString()
-            Glide.with(binding.root).load(letak.avatar).apply(RequestOptions().placeholder(R.drawable.ic_baseline_access_loading)).into(binding.ivAvatar)
+            Glide.with(binding.root).load(letak.avatar).apply(RequestOptions().error(R.drawable.ic_baseline_access_loading)).into(binding.ivAvatar)
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
