@@ -5,6 +5,7 @@ import com.example.androiduserexcercise.model.ResponseData
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -52,7 +53,12 @@ class MainActivity : AppCompatActivity() {
 
         val progressDialog = ProgressDialog(this@MainActivity)
         val loading = 1000L
-
+        progressDialog.setTitle("Now Loading")
+        progressDialog.show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            // Dismiss progress bar after 4 seconds
+            progressDialog.dismiss()
+        }, 2000)
 
 
         Utildata.service.getAllProduct().enqueue(object : Callback<ResponseData>{
@@ -63,8 +69,8 @@ class MainActivity : AppCompatActivity() {
             ){
 
                 if (response.isSuccessful){
-                    progressDialog.setTitle("Now Loading")
-                    progressDialog.show()
+
+
 
                     response.body()?.let { adapter.setData(it.data) }
                     Toast.makeText(this@MainActivity, "berhasil", Toast.LENGTH_SHORT)
