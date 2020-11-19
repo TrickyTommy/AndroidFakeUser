@@ -1,12 +1,16 @@
 package com.example.androidfakeuser
 
+import android.app.ProgressDialog
 import com.example.androiduserexcercise.model.ResponseData
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.HandlerCompat.postDelayed
+import androidx.core.widget.ContentLoadingProgressBar
 import com.example.androidfakeuser.databinding.ActivityMainBinding
 import com.example.androiduserexcercise.adapter.AdapterData
 import com.example.androiduserexcercise.util.Utildata
@@ -46,13 +50,22 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvProduct.adapter = adapter
 
+        val progressDialog = ProgressDialog(this@MainActivity)
+        val loading = 1000L
+
+
+
         Utildata.service.getAllProduct().enqueue(object : Callback<ResponseData>{
             override fun onResponse(
                 call: Call<ResponseData>,
                 response: Response<ResponseData>
 
             ){
+
                 if (response.isSuccessful){
+                    progressDialog.setTitle("Now Loading")
+                    progressDialog.show()
+
                     response.body()?.let { adapter.setData(it.data) }
                     Toast.makeText(this@MainActivity, "berhasil", Toast.LENGTH_SHORT)
                         .show()
